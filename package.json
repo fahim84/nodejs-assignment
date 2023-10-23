@@ -1,0 +1,23 @@
+{
+    "name": "node-workshop",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "watch": "nodemon src/http-server",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/fahim84/nodejs-assignment.git"
+    },
+    "keywords": [
+        "node",
+        "learning"
+    ],
+    "author": "fahimahmed",
+    "license": "ISC",
+    "dependencies": {
+        "nodemon": "^3.0.1"
+    }
+}
