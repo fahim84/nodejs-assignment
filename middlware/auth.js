@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const User = require("../models/user.model");
+const User = require('../models/user.model');
 require('dotenv').config();
 
 function generateToken(id) {
@@ -7,7 +7,7 @@ function generateToken(id) {
 }
 
 function verifyToken(token) {
-    return jwt.verify(token, process.env.SECRET)
+    return jwt.verify(token, process.env.SECRET);
 }
 
 function authMiddleware(req, res, next) {
@@ -23,20 +23,19 @@ function authMiddleware(req, res, next) {
     const authToken = token.replace('Bearer ', '');
     try {
         res.locals.token = verifyToken(authToken);
-        next();
+        return next();
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
 }
 
 async function adminCheckMiddleware(req, res, next) {
-
     try {
-        const data = await User.findById(res.locals.token._id, "role");
-        if (data.role === "End User") {
+        const data = await User.findById(res.locals.token._id, 'role');
+        if (data.role === 'End User') {
             res.status(401).json({ message: 'Unauthorized access, End user not allowed' });
         }
-        if (data.role === "Admin") {
+        if (data.role === 'Admin') {
             next();
         }
     } catch (err) {
@@ -45,4 +44,9 @@ async function adminCheckMiddleware(req, res, next) {
     }
 }
 
-module.exports = { generateToken, verifyToken, authMiddleware, adminCheckMiddleware }
+module.exports = {
+    generateToken,
+    verifyToken,
+    authMiddleware,
+    adminCheckMiddleware,
+};

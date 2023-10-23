@@ -1,17 +1,17 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var productsRouter = require('./routes/products');
-var categoriesRouter = require('./routes/categories');
-var cartRouter = require('./routes/cart');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const productsRouter = require('./routes/products');
+const categoriesRouter = require('./routes/categories');
+const cartRouter = require('./routes/cart');
 const dbConnect = require('./DB/db');
 const { authMiddleware } = require('./middlware/auth');
 
-var app = express();
+const app = express();
 
 app.use(logger('dev'));
 app.use(express.json());

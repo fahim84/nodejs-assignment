@@ -1,32 +1,39 @@
-var express = require('express');
-const User = require('../models/user.model');
-const { getUsers, getUser, createUser, updateUser, deleteUser, userLogin } = require('../controllers/user.controller');
-var router = express.Router();
+const express = require('express');
+const {
+    getUsers,
+    getUser,
+    createUser,
+    updateUser,
+    deleteUser,
+    userLogin,
+} = require('../controllers/user.controller');
 
-router.get('/list', function(req, res) {
+const router = express.Router();
+
+router.get('/list', (req, res) => {
     getUsers(req, res);
 });
 
-router.get('/:id', function(req, res) {
+router.get('/:id', (req, res) => {
     getUser(req, res);
 });
 
-router.post('/', function(req, res) {
+router.post('/', (req, res) => {
     createUser(req, res);
 });
 
-router.delete('/:id', function(req, res) {
+router.delete('/:id', (req, res) => {
     deleteUser(req, res);
 });
 
-router.patch('/:id', function(req, res) {
+router.patch('/:id', (req, res) => {
     updateUser(req, res);
 });
 
-router.post('/login', function(req, res) {
+router.post('/login', (req, res) => {
     userLogin(req, res);
 });
-router.post('/sign-up', function(req, res) {
+router.post('/sign-up', (req, res) => {
     createUser(req, res);
 });
 

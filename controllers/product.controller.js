@@ -1,11 +1,11 @@
-const Product = require("../models/product.model");
-const Category = require("../models/category.model");
+const Product = require('../models/product.model');
+const Category = require('../models/category.model');
 
 async function getProducts(req, res) {
     try {
         const data = await Product.find().lean();
-        if (data !== undefined && data.length != 0) {
-            for (product of data) {
+        if (data !== undefined && data.length !== 0) {
+            for (const product of data) {
                 if (product.category) {
                     const categoryName = await getCategoryName(product.category);
                     product.category = categoryName;
@@ -13,19 +13,19 @@ async function getProducts(req, res) {
             }
             res.send(data);
         } else {
-            res.send("Sorry no Products found");
+            res.send('Sorry no Products found');
         }
     } catch (err) {
         console.log(err);
-        res.send("Something went wrong");
+        res.send('Something went wrong');
     }
 }
 
 async function createProduct(req, res) {
-    productData = req.body
+    const productData = req.body;
     try {
         const data = await Product.create(productData);
-        res.send("New product created with id:" + data._id);
+        res.send(`New product created with id:${data._id}`);
     } catch (err) {
         console.log(err);
         res.send(err._message);
@@ -33,33 +33,33 @@ async function createProduct(req, res) {
 }
 
 async function deleteProduct(req, res) {
-    id = req.params.id;
+    const id = req.params.id;
     try {
         const data = await Product.findByIdAndDelete(id);
         if (data) {
-            res.send("Product deleted with id: " + data._id);
+            res.send(`Product deleted with id: ${data._id}`);
         } else {
-            res.send("Product not found.");
+            res.send('Product not found.');
         }
     } catch (err) {
         console.log(err);
-        res.send("Something went wrong");
+        res.send('Something went wrong');
     }
 }
 
 async function updateProduct(req, res) {
-    id = req.params.id;
-    productData = req.body
+    const id = req.params.id;
+    const productData = req.body;
     try {
         const data = await Product.findByIdAndUpdate(id, productData);
         if (data) {
-            res.send("Product with id:" + data._id + " is updated.");
+            res.send(`Product with id:${data._id} is updated.`);
         } else {
-            res.send("Product not found.");
+            res.send('Product not found.');
         }
     } catch (err) {
         console.log(err);
-        res.send("Something went wrong");
+        res.send('Something went wrong');
     }
 }
 
@@ -88,13 +88,13 @@ async function searchProduct(req, res) {
     }
 
     if (Object.keys(searchData).length === 0) {
-        res.send("Please enter product details to search for products.");
+        res.send('Please enter product details to search for products.');
         return;
     }
     try {
         const data = await Product.find(searchData).lean();
-        if (data !== undefined && data.length != 0) {
-            for (product of data) {
+        if (data !== undefined && data.length !== 0) {
+            for (const product of data) {
                 if (product.category) {
                     const categoryName = await getCategoryName(product.category);
                     product.category = categoryName;
@@ -102,7 +102,7 @@ async function searchProduct(req, res) {
             }
             res.send(data);
         } else {
-            res.send("No Product(s) match your search criteria.")
+            res.send('No Product(s) match your search criteria.');
         }
     } catch (err) {
         console.log(err);
@@ -115,12 +115,11 @@ async function getCategoryName(categoryId) {
         const category = await Category.findById(categoryId);
         if (category) {
             return category.category_name;
-        } else {
-            return null;
         }
+        return null;
     } catch (err) {
         console.log(err);
-        throw new Error("Error while fetching category name.");
+        throw new Error('Error while fetching category name.');
     }
 }
 
@@ -129,14 +128,18 @@ async function getCategoryId(categoryName) {
         const category = await Category.findOne({ category_name: categoryName });
         if (category) {
             return category._id;
-        } else {
-            return null;
         }
+        return null;
     } catch (err) {
         console.log(err);
-        throw new Error("Error while fetching category ID.");
+        throw new Error('Error while fetching category ID.');
     }
 }
 
-
-module.exports = { getProducts, createProduct, deleteProduct, updateProduct, searchProduct }
+module.exports = {
+    getProducts,
+    createProduct,
+    deleteProduct,
+    updateProduct,
+    searchProduct,
+};

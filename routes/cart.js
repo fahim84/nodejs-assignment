@@ -1,25 +1,31 @@
-var express = require('express');
-const Cart = require('../models/cart.model');
-const { getCart, createCart, updateCart, deleteCart, checkoutCart } = require('../controllers/cart.controller');
-var router = express.Router();
+const express = require('express');
+const {
+    getCart,
+    createCart,
+    updateCart,
+    deleteCart,
+    checkoutCart,
+} = require('../controllers/cart.controller');
 
-router.get('/', function(req, res) {
+const router = express.Router();
+
+router.get('/', (req, res) => {
     getCart(req, res);
 });
 
-router.post('/', function(req, res) {
+router.post('/', (req, res) => {
     createCart(req, res);
 });
 
-router.post('/checkout/:id', function(req, res) {
+router.post('/checkout/:id', (req, res) => {
     checkoutCart(req, res);
 });
 
-router.delete('/:id', function(req, res) {
+router.delete('/:id', (req, res) => {
     deleteCart(req, res);
 });
 
-router.patch('/:id', function(req, res) {
+router.patch('/:id', (req, res) => {
     updateCart(req, res);
 });
 
