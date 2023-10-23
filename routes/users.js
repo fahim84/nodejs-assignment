@@ -26,5 +26,8 @@ router.patch('/:id', function(req, res) {
 router.post('/login', function(req, res) {
     userLogin(req, res);
 });
+router.post('/sign-up', function(req, res) {
+    createUser(req, res);
+});
 
 module.exports = router;

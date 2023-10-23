@@ -26,6 +26,7 @@ async function getUser(req, res) {
 
 async function createUser(req, res) {
     userData = req.body
+    await userExists(userData, req, res)
     try {
         const data = await User.create(userData);
         res.send("New user created with id:" + data._id);
@@ -33,6 +34,23 @@ async function createUser(req, res) {
         console.log(err);
         res.send(err._message);
     }
+}
+
+async function userExists(userData, req, res) {
+    try {
+        const userName = await User.exists({ userName: userData.userName });
+        if (userName) {
+            res.send("User name already exists.")
+        }
+        const userEmail = await User.exists({ userEmail: userData.userEmail });
+        if (userEmail) {
+            res.send("Email already exists associated with another account.")
+        }
+    } catch (err) {
+        console.log(err);
+        res.send(err._message);
+    }
+
 }
 
 async function deleteUser(req, res) {
@@ -80,4 +98,16 @@ async function userLogin(req, res) {
         res.send("Something went wrong");
     }
 }
-module.exports = { getUsers, getUser, createUser, deleteUser, updateUser, userLogin }
+
+async function getUserFromToken(req, res) {
+    const token = req.header('Authorization');
+    if (token && token.startsWith('Bearer ')) {
+        const authToken = token.replace('Bearer ', '');
+        tokenData = verifyToken(authToken);
+        user = await User.findById(tokenData._id);
+
+        return user
+    }
+}
+
+module.exports = { getUsers, getUser, createUser, deleteUser, updateUser, userLogin, getUserFromToken }
